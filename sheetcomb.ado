@@ -2,7 +2,7 @@
 
 prog sheetcomb 
 
-	syntax using/, [force]
+	syntax using/, [key(varlist)] [force]
 	
 	clear 
 	tempfile allsheet
@@ -17,11 +17,18 @@ prog sheetcomb
 		
 		forval x=1/`=r(N_worksheet)' {
 		    import excel "`using'", sh("`sh_`x''") clear first 
-			append using `allsheet', `force'
+			if mi("`varlist'") {
+				append using `allsheet', `force'
+			}
+			else if !mi("`varlist'") {
+				merge m:m `varlist' using `allsheet', nogen `force'
+			}
+			
+			
 			save `allsheet', replace
 		}
 		
-		u `allsheet'
+		u `allsheet', clear
 
 end
 
