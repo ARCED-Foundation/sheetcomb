@@ -1,5 +1,6 @@
 *! version 1.0.0 Mehrab Ali 07jul2022
 
+cap prog drop sheetcomb
 prog sheetcomb 
 
 	syntax using/, [key(varlist) force  ///
@@ -9,7 +10,7 @@ prog sheetcomb
 			ALLstring					///
 			clear]
 			
-	if !mi("`cellrange'") loc `cellrange' = "cellrange(`cellrange')"
+	if !mi("`cellrange'") loc cellrange = "cellrange(`cellrange')"
 /*
 	if !mi("`allstring'") loc `allstring' = "allstring(`allstring')"
 */
@@ -26,7 +27,7 @@ prog sheetcomb
 		
 		
 		forval x=1/`=r(N_worksheet)' {
-		    import excel "`using'", sh("`sh_`x''") `clear' `first' `cellrange' `allstring'
+		    import excel "`using'", sh("`sh_`x''") `clear' `firstrow' `cellrange' `allstring'
 			
 			if mi("`varlist'") {
 				append using `allsheet', `force'
@@ -41,7 +42,4 @@ prog sheetcomb
 		u `allsheet', clear
 
 end
-
-
-
 
