@@ -1,2 +1,2 @@
 # sheetcomb
-Combine excel sheets and files
+Combine excel sheets
