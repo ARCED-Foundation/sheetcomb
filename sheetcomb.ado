@@ -2,7 +2,17 @@
 
 prog sheetcomb 
 
-	syntax using/, [key(varlist)] [force]
+	syntax using/, [key(varlist) force  ///
+			CELLRAnge(string)				///
+			FIRSTrow					///
+		///	ALLstring(string)				///
+			ALLstring					///
+			clear]
+			
+	if !mi("`cellrange'") loc `cellrange' = "cellrange(`cellrange')"
+/*
+	if !mi("`allstring'") loc `allstring' = "allstring(`allstring')"
+*/
 	
 	clear 
 	tempfile allsheet
@@ -16,14 +26,14 @@ prog sheetcomb
 		
 		
 		forval x=1/`=r(N_worksheet)' {
-		    import excel "`using'", sh("`sh_`x''") clear first 
+		    import excel "`using'", sh("`sh_`x''") `clear' `first' `cellrange' `allstring'
+			
 			if mi("`varlist'") {
 				append using `allsheet', `force'
 			}
 			else if !mi("`varlist'") {
-				merge m:m `varlist' using `allsheet', nogen `force'
+				merge m:m `varlist' using `allsheet', nogen `force' 
 			}
-			
 			
 			save `allsheet', replace
 		}
@@ -31,4 +41,7 @@ prog sheetcomb
 		u `allsheet', clear
 
 end
+
+
+
 
